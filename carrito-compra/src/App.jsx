@@ -13,16 +13,14 @@ function App() {
     setProductos(stock);
   }, []);
 
-  const calcularTotalCompra = () => {
-    return carrito.reduce((total, item) => total + item.unitPrice * item.cantidad, 0);
-  };
-
+  
   const agregarAlCarrito = (producto) => {
+    console.log("Carrito actualizado:", carrito);
     const productoExistente = carrito.find(item => item.id === producto.id);
     const esProductoLimitado = producto.name === " 🧻Papel Higiénico" || producto.name === "🧼 Alcohol en Gel";
 
     if (productoExistente && productoExistente.cantidad >= 5 && esProductoLimitado) {
-      setMensajeAdvertencia("Lo sentimos. No es posible comprar más unidades. Otras familias también necesitan abastecerse (no sea sorete en resumen... ).");
+      setMensajeAdvertencia("Lo sentimos. No es posible comprar más unidades. Otras familias también necesitan abastecerse (en resumen no sea sorete ... ).");
       return;
     } else {
       setMensajeAdvertencia('');
@@ -39,6 +37,11 @@ function App() {
     }
   };
 
+  const calcularTotalCompra = () => {
+    console.log("Total calculado:", carrito.reduce((total, item) => total + item.unitPrice * item.cantidad, 0));
+    return carrito.reduce((total, item) => total + item.unitPrice * item.cantidad, 0);
+  };
+ 
 
   const quitarDelCarrito = (producto) => {
     const productoExistente = carrito.find(item => item.id === producto.id);
@@ -51,7 +54,12 @@ function App() {
         )
       );
     }
+    
+
+    
   };
+  const totalCompra = calcularTotalCompra();
+
   return (
     <div className="container">
       <div className="row mt-5">
@@ -59,7 +67,8 @@ function App() {
           <Productos productos={productos} agregarAlCarrito={agregarAlCarrito} />
         </div>
         <div className="col-md-6">
-          <Carrito carrito={carrito} quitarDelCarrito={quitarDelCarrito} totalCompra={calcularTotalCompra()}/>
+          <Carrito carrito={carrito} quitarDelCarrito={quitarDelCarrito} totalCompra={totalCompra}/>
+          
     
           {mensajeAdvertencia && <div className="alert alert-warning mt-3">{mensajeAdvertencia}</div>}
         </div>
@@ -67,5 +76,5 @@ function App() {
     </div>
   );
 }
-
+//nota : 
 export default App;
